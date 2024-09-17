@@ -1,4 +1,19 @@
+import { useEffect } from "react";
+
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onConfirm();
+    }, 3000);
+
+    // questa funzione è detta di cleanup parte dopo la funzione che gli mando nell'useEffect e viene sempre esguita dopo la prima funzione o prima che il componetne viene rimosso, 
+    // la dipendenza è importante
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [onConfirm]);
+
+
   return (
     <div id="delete-confirmation">
       <h2>Are you sure?</h2>
