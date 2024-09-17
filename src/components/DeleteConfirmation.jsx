@@ -5,9 +5,13 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
   const [remainingTime, setRemainingTime] = useState(TIMER);
 
   useEffect(() => {
-    setInterval(() => {
+    const progressBar = setInterval(() => {
       setRemainingTime(prev => prev - 10)
     }, 10)
+
+    return () => {
+      clearInterval(progressBar)
+    }
   }, [])
 
   useEffect(() => {
