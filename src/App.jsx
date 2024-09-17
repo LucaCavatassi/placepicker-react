@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState,useEffect } from 'react';
 
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
@@ -10,17 +10,22 @@ import sortPlacesByDistance from "./loc.js"
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
-  const [availablePlaces, setAvailablePlaces] = useState([]):
+  const [availablePlaces, setAvailablePlaces] = useState([]);
   const [pickedPlaces, setPickedPlaces] = useState([]);
 
-  navigator.geolocation.getCurrentPosition((position) => {
-    const sortedPlaces = sortPlacesByDistance(
-      AVAILABLE_PLACES,
-      position.coords.latitude,
-      position.coords.longitude
-    )
-    setAvailablePlaces(sortedPlaces);
-  })
+  // Use effect riceve due parametri una funzione che wrappa la mia, il secondo un array di dipendenze.
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sortedPlaces = sortPlacesByDistance(
+        AVAILABLE_PLACES,
+        position.coords.latitude,
+        position.coords.longitude
+      )
+      setAvailablePlaces(sortedPlaces);
+    })
+  }, []);
+
+  
 
   function handleStartRemovePlace(id) {
     modal.current.open();
