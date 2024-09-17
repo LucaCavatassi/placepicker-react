@@ -5,7 +5,7 @@ import { AVAILABLE_PLACES } from './data.js';
 import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
-import sortPlacesByDistance from "./loc.js"
+import {sortPlacesByDistance} from "./loc.js"
 
 function App() {
   const modal = useRef();
@@ -14,6 +14,7 @@ function App() {
   const [pickedPlaces, setPickedPlaces] = useState([]);
 
   // Use effect riceve due parametri una funzione che wrappa la mia, il secondo un array di dipendenze.
+  // L'idea è che la prima funzione, viene eseguita dopo che tutti i componenti sono stati eseguiti.
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       const sortedPlaces = sortPlacesByDistance(
@@ -80,6 +81,7 @@ function App() {
         <Places
           title="Available Places"
           places={availablePlaces}
+          fallbackText="Sorting places by distance."
           onSelectPlace={handleSelectPlace}
         />
       </main>
