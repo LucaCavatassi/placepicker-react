@@ -7,11 +7,16 @@ import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import {sortPlacesByDistance} from "./loc.js"
 
+// Pick Stored at startup
+const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+const storedPlaces = storedIds.map((id) => AVAILABLE_PLACES.find((place) => place.id === id))
+
 function App() {
+
   const modal = useRef();
   const selectedPlace = useRef();
   const [availablePlaces, setAvailablePlaces] = useState([]);
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
 
   // Use effect riceve due parametri una funzione che wrappa la mia, il secondo un array di dipendenze.
   // L'idea è che la prima funzione, viene eseguita dopo che tutti i componenti sono stati eseguiti.
@@ -51,7 +56,7 @@ function App() {
     if (storedIds.indexOf(id) === -1) {
       localStorage.setItem(
         "selectedPlaces", 
-        JSON.stringify([id], ...storedIds)
+        JSON.stringify([id, ...storedIds] )
       )
     }
   }
