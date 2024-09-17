@@ -15,6 +15,7 @@ function App() {
 
   // Use effect riceve due parametri una funzione che wrappa la mia, il secondo un array di dipendenze.
   // L'idea è che la prima funzione, viene eseguita dopo che tutti i componenti sono stati eseguiti.
+  // L'array delle dipendenze vuoto è quello che non fa fare l'infinite loop.
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       const sortedPlaces = sortPlacesByDistance(
@@ -45,6 +46,14 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+
+    const storedIds = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+    if (storedIds.indexOf(id) === -1) {
+      localStorage.setItem(
+        "selectedPlaces", 
+        JSON.stringify([id], ...storedIds)
+      )
+    }
   }
 
   function handleRemovePlace() {
@@ -81,7 +90,7 @@ function App() {
         <Places
           title="Available Places"
           places={availablePlaces}
-          fallbackText="Sorting places by distance."
+          fallbackText="Sorting places by distance..."
           onSelectPlace={handleSelectPlace}
         />
       </main>
